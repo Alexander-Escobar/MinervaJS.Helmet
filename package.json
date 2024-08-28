@@ -1,6 +1,6 @@
 {
   "name": "minervajs-helmet",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -18,5 +18,14 @@
   "dependencies": {
     "mysql": "^2.18.1",
     "oracledb": "^6.6.0"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+	  "type": "git",
+	  "url": "https://github.com/Alexander-Escobar/MinervaJS.Helmet.git"
+  },
+  "bug": {
+	  "url": "https://github.com/Alexander-Escobar/MinervaJS.Helmet.git/issues"
+  },
+  "homepage": "https://github.com/Alexander-Escobar/MinervaJS.Helmet.git#readme"
 }

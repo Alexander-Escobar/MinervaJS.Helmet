@@ -4,7 +4,6 @@
  * @description Modulo gestor de la coneccion a la base de datos
  * dbConfig	Configuracion de la Base de Datos
  */
-
 exports.httpMsgFormat = 'HTML';
 exports.Title = "DB Smarts Docs";
 exports.Rights_Reserved = "2023-2025 &copy; A&C Consultoría Informática";
@@ -12,7 +11,7 @@ exports.Rights_Reserved = "2023-2025 &copy; A&C Consultoría Informática";
 exports.dbConfig = 
 {
 	// mysql
-    // host: "localhost",
+    // host: "localhost o IP",
       user: "User",
       password: "Password01",
     // database: "DBSisConta"

@@ -12,7 +12,7 @@ var settings = require('../settings');
  * @function 
  * @name executeSQL
  * @param {string} sql - Sentencia SQL a ejecutar
- * @param {callback} callback - objeto, para retornar la promesa
+ * @param {Promise<callback>} callback - objeto, para retornar la promesa
  * @returns {result} result/err - Devuelve un objeto con el set de datos o un objeto err con la respuesta del error
  * @description Ejecuta una sentencia SQL y devuelve un objeto en un set de datos
  */
@@ -46,7 +46,7 @@ exports.executeSQL = function (sql, callback)
  * @function 
  * @name executeSQLarray
  * @param {string} sql - Sentencia SQL a ejecutar
- * @param {callback} callback - objeto, para retornar la promesa
+ * @param {Promise<callback>} callback - objeto, para retornar la promesa
  * @returns {result} result/err - Devuelve un objeto con el set de datos o un objeto err con la respuesta del error
  * @description Ejecuta una sentencia SQL, basado en una serie de argumentos y devuelve un objeto en un set de datos
  */

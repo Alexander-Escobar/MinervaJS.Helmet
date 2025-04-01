@@ -1,6 +1,6 @@
 {
   "name": "minervajs-helmet",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -16,16 +16,15 @@
   "license": "ISC",
   "description": "Modulo para la gestion de coneccion a la base de datos, de diferentes tipos mediante el uso de sobre Carga y Herencia de clases",
   "dependencies": {
-    "mysql": "^2.18.1",
+    "mysql2": "^3.14.0",
     "oracledb": "^6.6.0"
   },
-  "devDependencies": {},
   "repository": {
-	  "type": "git",
-	  "url": "https://github.com/Alexander-Escobar/MinervaJS.Helmet.git"
+    "type": "git",
+    "url": "https://github.com/Alexander-Escobar/MinervaJS.Helmet.git"
   },
   "bug": {
-	  "url": "https://github.com/Alexander-Escobar/MinervaJS.Helmet.git/issues"
+    "url": "https://github.com/Alexander-Escobar/MinervaJS.Helmet.git/issues"
   },
   "homepage": "https://github.com/Alexander-Escobar/MinervaJS.Helmet.git#readme"
 }

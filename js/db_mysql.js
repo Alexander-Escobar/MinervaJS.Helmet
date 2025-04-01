@@ -1,4 +1,10 @@
-var mysql = require('mysql2');
+/**
+ * @module 
+ * @name db_mysql
+ * @description Modulo gestor de la coneccion a la base de datos, MySQL, utiliza el cliente mysql2
+ *
+ */
+ var mysql = require('mysql2');
 var settings = require('../js/settings');
 
 exports.executeSQL = function (sql, callback)

@@ -9,22 +9,22 @@ Archivo: index.js
 var db = require('minervajs-helmet');  
 
 var l_sql = " SELECT P.id, " +  
-					" P.titulo, " +  
-					" P.subtitulo, " +  
-					" DATE_FORMAT(P.publicado, '%M %d, %Y') as publicado, " +  
-					" P.autor, " +  
-					" P.introduccion, " +  
-					" P.tags, " +  
-					" P.url_imagen " +  
-				" FROM publicacion P " +  
-				" ORDER BY P.publicado DESC " +  
-				" LIMIT 10 ";  
+                                        " P.titulo, " +  
+                                        " P.subtitulo, " +  
+                                        " DATE_FORMAT(P.publicado, '%M %d, %Y') as publicado, " +  
+                                        " P.autor, " +  
+                                        " P.introduccion, " +  
+                                        " P.tags, " +  
+                                        " P.url_imagen " +  
+                                " FROM publicacion P " +  
+                                " ORDER BY P.publicado DESC " +  
+                                " LIMIT 10 ";  
 
 db.executeSQL(l_sql, function(a_data, err)  
 {
-	if (err)  
-	{console.log(err);}  
-	else  
-	{console.log(a_data);}  
+        if (err)  
+        {console.log(err);}  
+        else  
+        {console.log(a_data);}  
 });  
 

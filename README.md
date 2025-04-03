@@ -9,22 +9,22 @@ Archivo: index.js
 var db = require('minervajs-helmet');  
 
 var l_sql = " SELECT P.id, " +  
-                " P.titulo, " +  
-                " P.subtitulo, " +  
-                " DATE_FORMAT(P.publicado, '%M %d, %Y') as publicado, " +  
-                " P.autor, " +  
-                " P.introduccion, " +  
-                " P.tags, " +  
-                " P.url_imagen " +  
-            " FROM publicacion P " +  
-            " ORDER BY P.publicado DESC " +  
-            " LIMIT 10 ";  
+&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;" P.titulo, " +  
+&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;" P.subtitulo, " +  
+&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;" DATE_FORMAT(P.publicado, '%M %d, %Y') as publicado, " +  
+&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;" P.autor, " +  
+&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;" P.introduccion, " +  
+&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;" P.tags, " +  
+&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;" P.url_imagen " +  
+&nbsp; &nbsp; &nbsp;" FROM publicacion P " +  
+&nbsp; &nbsp; &nbsp;" ORDER BY P.publicado DESC " +  
+&nbsp; &nbsp; &nbsp;" LIMIT 10 ";  
 
 db.executeSQL(l_sql, function(a_data, err)  
 {
-    if (err)  
-    {console.log(err);}  
-    else  
-    {console.log(a_data);}  
+&nbsp; &nbsp; &nbsp;if (err)  
+&nbsp; &nbsp; &nbsp;{console.log(err);}  
+&nbsp; &nbsp; &nbsp;else  
+&nbsp; &nbsp; &nbsp;{console.log(a_data);}  
 });  
 

@@ -4,10 +4,10 @@
  * @description Modulo gestor de la coneccion a la base de datos
  *
  */
-const postgres = require('./js/db_postgres');
-const mysql = require('./js/db_mysql');
-const oracle = require('./js/db_oracle');
-const config = require('./config/settings');
+const postgres = require('../js/db_postgres');
+const mysql = require('../js/db_mysql');
+const oracle = require('../js/db_oracle');
+const config = require('../config/settings');
 
 const connections = {};
 

@@ -1,47 +1,38 @@
-var oracledb = require('oracledb');
-var settings = require('../js/settings');
+const oracledb = require('oracledb');
 
-oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT;
+async function connect(config) {
+  try {
+    oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT; // Para obtener resultados como objetos
 
-exports.executeSQL = function (sql, callback)
-{
-    let con;
-	
-	con = oracledb.getConnection(settings.dbConfig);
-	
-	console.log(sql);
-	result = con.execute(sql);
-	console.log(result);
-	
-	con.close();
-		
-	callback(result);
-  
-};
+    const connection = await oracledb.getConnection({
+      user: config.user,
+      password: config.password,
+      connectString: config.connectString, // Ejemplo: 'localhost/XE' o una cadena de conexión TNS
+    });
+    return connection;
+  } catch (error) {
+    console.error('Error al conectar a Oracle:', error);
+    throw error;
+  }
+}
 
+async function query(connection, sql, binds = []) {
+  try {
+    const result = await connection.execute(sql, binds);
+    return result.rows;
+  } catch (error) {
+    console.error('Error al ejecutar la consulta Oracle:', error);
+    throw error;
+  }
+}
 
-exports.executeSQLXX = function (sql, callback)
-{
-    var con = new oracledb.getConnection(settings.dbConfig);
-    
-    //con.connect(function(err) 
-	//{
-    //    if (err) 
-    //    {
-    //        callback(null, err);
-    //        //throw err;
-    //    }
-        if (settings.servConfig.debug){console.log("Connected!");}
-        con.execute(sql, function (err, result) {
-          if (err) 
-          {
-            callback(null, err);
-            //throw err;
-          }
-		  if (settings.servConfig.debug){console.log("Sentencia Ejecutada:"+sql);}
-          callback(result);
-		  
-		  con.close();
-        });
-    //});
-};
+async function close(connection) {
+  try {
+    await connection.close();
+  } catch (error) {
+    console.error('Error al cerrar la conexión Oracle:', error);
+    throw error;
+  }
+}
+
+module.exports = { connect, query, close };

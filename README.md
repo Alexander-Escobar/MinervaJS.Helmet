@@ -4,7 +4,7 @@ Modulo para la gestion de las conección a la base de datos, permite conectarse 
 Ejemplo: Partiendo de un proyecto en blanco recien creado  
 `$ npm i minervajs-helmet  `
 
-###Archivo: ./config/settings.js  
+#### Archivo: ./config/settings.js  
 Adicionas una Entrada, por cada tipo y base de datos
 ```javascript
 {
@@ -20,7 +20,7 @@ Adicionas una Entrada, por cada tipo y base de datos
 }
 ```
 
-###Archivo: index.js
+#### Archivo: index.js
 
 ```javascript
 var db = require('minervajs-helmet');
@@ -41,7 +41,7 @@ async function main() {
 main();
 ```
 
-###Salida de resultados
+#### Salida de resultados
 ```javascript
 Resultados de MySQL: [
   {

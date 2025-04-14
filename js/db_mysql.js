@@ -1,67 +1,24 @@
 /**
- * @module 
- * @name db_mysql
- * @description Modulo gestor de la coneccion a la base de datos, MySQL, utiliza el cliente mysql2
- *
- *
-var mysql = require('mysql2');
-var settings = require('../js/settings');
-
-
-exports.executeSQL = function (sql, callback)
-{
-    var con = new mysql.createConnection(settings.dbConfig);
-    
-    con.connect(function(err) 
-	{
-        if (err) 
-        {
-            callback(null, err);
-            //throw err;
-        }
-        if (settings.servConfig.debug){console.log("Connected!");}
-        con.query(sql, function (err, result) {
-          if (err) 
-          {
-            callback(null, err);
-            //throw err;
-          }
-		  if (settings.servConfig.debug){console.log("Sentencia Ejecutada:"+sql);}
-          callback(result);
-		  
-		  con.end();
-        });
-    });
-};
-
-exports.executeSQLarray = function (sql, array, callback)
-{
-	var con = new mysql.createConnection(settings.dbConfig);
-    
-    con.connect(function(err) 
-	{
-        if (err) 
-        {
-            callback(null, err);
-            //throw err;
-        }
-        if (settings.servConfig.debug){console.log("Connected!");}
-        con.query(sql, array, function (err, result) {
-          if (err) 
-          {
-            callback(null, err);
-            //throw err;
-          }
-          if (settings.servConfig.debug){console.log("Sentencia Ejecutada:"+sql);}
-          callback(result);
-		  
-		  con.end();
-        });
-    });
-}
-*/
+ * @module js/mysql
+ * @name Provider DB js/mysql
+ * @description Módulo para la conexión y operaciones del Proveedor MySQL.
+ */
+ 
+ /**
+ * @constant
+ * @type {string}
+ * @default
+ */
 const mysql = require('mysql2/promise'); // Usamos mysql2/promise para async/await
 
+/**
+ * Establece una conexión a la base de datos MySQL.
+ *
+ * @async
+ * @function connect
+ * @param {object} config - Configuración de la conexión.
+ * @returns {Promise<mysql.Connection>} Objeto de conexión de MySQL.
+ */
 async function connect(config) {
   try {
     const connection = await mysql.createConnection({
@@ -78,6 +35,16 @@ async function connect(config) {
   }
 }
 
+/**
+ * Ejecuta una consulta SQL en la base de datos MySQL.
+ *
+ * @async
+ * @function query
+ * @param {mysql.Connection} connection - Objeto de conexión de MySQL.
+ * @param {string} sql - Consulta SQL.
+ * @param {Array} [values] - Parámetros para la consulta.
+ * @returns {Promise<Array>} Filas resultantes de la consulta.
+ */
 async function query(connection, sql, values = []) {
   try {
     const [rows, fields] = await connection.execute(sql, values);
@@ -88,6 +55,14 @@ async function query(connection, sql, values = []) {
   }
 }
 
+/**
+ * Cierra la conexión a la base de datos MySQL.
+ *
+ * @async
+ * @function close
+ * @param {mysql.Connection} connection - Objeto de conexión de MySQL.
+ * @returns {Promise<void>}
+ */
 async function close(connection) {
   try {
     await connection.end();

@@ -1,5 +1,25 @@
+/**
+ * @module js/oracle
+  * @name Provider DB js/oracle
+ * @description Módulo para la conexión y operaciones de Oracle.
+ */
+ 
+ /**
+ * @constant
+ * @type {string}
+ * @default
+ */
 const oracledb = require('oracledb');
 
+
+/**
+ * Establece una conexión a la base de datos Oracle.
+ *
+ * @async
+ * @function connect
+ * @param {object} config - Configuración de la conexión.
+ * @returns {Promise<oracledb.Connection>} Objeto de conexión de Oracle.
+ */
 async function connect(config) {
   try {
     oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT; // Para obtener resultados como objetos
@@ -16,6 +36,16 @@ async function connect(config) {
   }
 }
 
+/**
+ * Ejecuta una consulta SQL en la base de datos Oracle.
+ *
+ * @async
+ * @function query
+ * @param {oracledb.Connection} connection - Objeto de conexión de Oracle.
+ * @param {string} sql - Consulta SQL.
+ * @param {Array} [binds] - Parámetros para la consulta (bind variables).
+ * @returns {Promise<Array>} Filas resultantes de la consulta.
+ */
 async function query(connection, sql, binds = []) {
   try {
     const result = await connection.execute(sql, binds);
@@ -26,6 +56,14 @@ async function query(connection, sql, binds = []) {
   }
 }
 
+/**
+ * Cierra la conexión a la base de datos Oracle.
+ *
+ * @async
+ * @function close
+ * @param {oracledb.Connection} connection - Objeto de conexión de Oracle.
+ * @returns {Promise<void>}
+ */
 async function close(connection) {
   try {
     await connection.close();

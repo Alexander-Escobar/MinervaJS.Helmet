@@ -15,7 +15,7 @@ module.exports = {
  * 'mi_postgres': 
  * {
  *   type: 'postgres',
- *   host: 'localhost',
+ *   host: 'localhost o IP',
  *   port: 5432,
  *   user: 'usuario',
  *   password: 'contraseña',
@@ -25,20 +25,29 @@ module.exports = {
   'my_mysql': 
   {
     type: 'mysql',
-    host: 'sql3.freesqldatabase.com'	// 'localhost',
-    port: 3306,							//
-    user: 'sql3772729'					// 'usuario',
-    password: 'esUA3qpGKD'				// 'contraseña',
+    host: 'sql3.freesqldatabase.com',	// 'localhost',
+    port: 3306,							// 'puerto',
+    user: 'sql3772729',					// 'usuario',
+    password: 'esUA3qpGKD',				// 'contraseña',
     database: 'sql3772729'				// 'nombre_db'
   },
-  'my_oracle':  {
-    type: 'oracle',
-    host: 'localhost o IP'
-    port: 5432,
-    user: 'usuario',
-    password: 'contraseña',
-    database: 'nombre_db',
- 	connectString : '(DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=namehostoip)(PORT=port))(CONNECT_DATA=(SERVICE_NAME=servicename)))'
-  },
-
+/*  'my_oracle':  {
+ *   type: 'oracle',
+ *   user: 'usuario',
+ *   password: 'contraseña',
+ *	connectString : '(DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=namehostoip)(PORT=port))(CONNECT_DATA=(SERVICE_NAME=servicename)))'
+ * },
+ *  'mi_mongodb': {
+ *   type: 'mongodb',
+ *   url: 'mongodb://localhost:27017/nombre_db'
+ * },
+ * 'mi_mariadb': {
+ *   type: 'mariadb',
+ *   host: 'localhost',
+ *   port: 3306,
+ *   user: 'mi_usuario',
+ *   password: 'mi_contraseña',
+ *   database: 'nombre_db'
+ * }
+ */
 };

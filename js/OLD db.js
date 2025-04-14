@@ -1,8 +1,7 @@
 /**
  * @module 
- * @name db
- * @description Modulo gestor de la coneccion a la base de datos
- *
+ * @name db_mysql
+ * @description Modulo gestor de la coneccion a la base de datos, MySQL, utiliza el cliente mysql2
  */
 
 var mysql = require('mysql');

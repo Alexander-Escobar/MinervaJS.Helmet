@@ -1,30 +1,64 @@
-# MinervaJS.Helmet
+# MinervaJS-Helmet
 Modulo para la gestion de las conección a la base de datos, permite conectarse a varios tipos utilizando sobrecarga de metodos, tolera MySQL y Oracle Client  
 
-Ejemplo: Partiendo de un proyecto en blanco recien creado  
-> npm i minervajs-helmet  
+Ejemplo: Partiendo de un proyecto en blanco recien creado
+`$ npm i minervajs-helmet  `
 
-Archivo: index.js  
+####Archivo: ./config/settings.js  
+Adicionas una Entrada, por cada tipo y base de datos
+```javascript
+{
+  'my_mysql':							// 'Perfil de Conexion'
+  {
+    type: 'mysql',
+    host: 'sql3.freesqldatabase.com',	// 'localhost',
+    port: 3306, 						// 'puerto',
+    user: 'sql3772729', 				// 'usuario',
+    password: 'esUA3qpGKD', 			// 'contraseña',
+    database: 'sql3772729' 				// 'nombre_db'
+  }
+}
+```
 
-var db = require('minervajs-helmet');  
+####Archivo: index.js
 
-var l_sql = " SELECT P.id, " +  
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;" P.titulo, " +  
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;" P.subtitulo, " +  
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;" DATE_FORMAT(P.publicado, '%M %d, %Y') as publicado, " +  
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;" P.autor, " +  
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;" P.introduccion, " +  
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;" P.tags, " +  
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;" P.url_imagen " +  
-&nbsp; &nbsp; &nbsp;" FROM publicacion P " +  
-&nbsp; &nbsp; &nbsp;" ORDER BY P.publicado DESC " +  
-&nbsp; &nbsp; &nbsp;" LIMIT 10 ";  
+```javascript
+var db = require('minervajs-helmet');
+var config = require('./config/settings.js');
 
-db.executeSQL(l_sql, function(a_data, err)  
-{  
-&nbsp; &nbsp; &nbsp; if (err)  
-&nbsp; &nbsp; &nbsp; {console.log(err);}  
-&nbsp; &nbsp; &nbsp; else  
-&nbsp; &nbsp; &nbsp; {console.log(a_data);}  
-});  
+async function main() {
+	try {
+    // Conexión a MySQL
+    const mysqlConnection = await db.connect('my_mysql', config);
+    const mysqlResult = await db.query('my_mysql', ' SELECT * FROM test ;', [], config); // Ejemplo con parámetros
+    console.log('Resultados de MySQL:', mysqlResult);
+    await db.close('my_mysql', config);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+main();
+```
+
+####Salida de resultados
+```javascript
+Resultados de MySQL: [
+  {
+    id: 1,
+    codigo: 'SV',
+    descripcion: 'El Salvador',
+    fecha: 2025-04-02T06:00:00.000Z
+  },
+  {
+    id: 2,
+    codigo: 'EU',
+    descripcion: 'Estados Unidos',
+    fecha: 2025-04-02T06:00:00.000Z
+  }
+]
+```
+
+En la instalacion, puedes hacer uso del archivo muestra que esta en *\node_modules\minervajs-helmet\config\settings.js*
+
 

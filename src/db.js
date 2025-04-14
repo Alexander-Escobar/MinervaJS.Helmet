@@ -28,6 +28,7 @@ const connections = {};
 async function connect(databaseName, config) 
 {
   const dbConfig = config[databaseName];
+  
   if (!dbConfig) {
     throw new Error(`Configuración de base de datos '${databaseName}' no encontrada.`);
   }
@@ -74,9 +75,9 @@ async function connect(databaseName, config)
  * @throws {Error} Si el tipo de base de datos no es soportado para la operación 'query'.
  * @description Ejecuta una sentencia SQL en la base de datos especificada y devuelve un objeto en un set de datos
  */
-async function query(databaseName, sql, config) 
+async function query(databaseName, sql, values = [], config) 
 {
-  const connection = await connect(databaseName);
+  const connection = await connect(databaseName, config);
   const dbConfig = config[databaseName];
 
   switch (dbConfig.type) 
@@ -84,7 +85,7 @@ async function query(databaseName, sql, config)
     case 'postgres':
       return postgres.query(connection, sql);
     case 'mysql':
-      return mysql.query(connection, sql);
+      return mysql.query(connection, sql, values);
     // case 'mariadb': // agregamos el caso MariaDB
     //   return mariadb.query(connection, sql, binds);
     //   break;

@@ -27,39 +27,37 @@ const connections = {};
  */
 async function connect(databaseName, config) 
 {
-  const dbConfig = config[databaseName];
-  
-  if (!dbConfig) {
-    throw new Error(`Configuración de base de datos '${databaseName}' no encontrada.`);
-  }
+	const dbConfig = config[databaseName];
 
-  if (connections[databaseName]) 
-  {
-    return connections[databaseName]; // Ya existe una conexión
-  }
+	if (!dbConfig) 
+	{ throw new Error(`Configuración de base de datos '${databaseName}' no encontrada.`); }
 
-  switch (dbConfig.type) 
-  {
-    case 'postgres':
-      connections[databaseName] = await postgres.connect(dbConfig);
-      break;
-    case 'mysql':
-      connections[databaseName] = await mysql.connect(dbConfig);
-      break;
-    // case 'mariadb':
-    //   connections[databaseName] = await mariadb.connect(dbConfig);
-    //   break;
-    case 'oracle':
-      connections[databaseName] = await oracle.connect(dbConfig);
-      break;
-    // case 'mongodb':
-    //  connections[databaseName] = await mongodb.connect(dbConfig);
-    //  break;
-    default:
-      throw new Error(`Tipo de base de datos '${dbConfig.type}' no soportado.`);
-  }
+	// Ya existe una conexión 
+	if (connections[databaseName]) 
+	{ return connections[databaseName]; }
 
-  return connections[databaseName];
+	switch (dbConfig.type) 
+	{
+		case 'postgres':
+			connections[databaseName] = await postgres.connect(dbConfig);
+			break;
+		case 'mysql':
+			connections[databaseName] = await mysql.connect(dbConfig);
+			break;
+		// case 'mariadb':
+		//   connections[databaseName] = await mariadb.connect(dbConfig);
+		//   break;
+		case 'oracle':
+			connections[databaseName] = await oracle.connect(dbConfig);
+			break;
+		// case 'mongodb':
+		//  connections[databaseName] = await mongodb.connect(dbConfig);
+		//  break;
+		default:
+			throw new Error(`Tipo de base de datos '${dbConfig.type}' no soportado.`);
+	}
+
+	return connections[databaseName];
 }
 
 /**
@@ -140,12 +138,36 @@ async function close(databaseName, config)
 
 /**
  * @function 
- * @name executeSQL
+ * @name execute
  * @param {string} sql - Sentencia SQL a ejecutar
  * @param {Promise<callback>} callback - objeto, para retornar la promesa
  * @returns {result} result/err - Devuelve un objeto con el set de datos o un objeto err con la respuesta del error
  * @description Ejecuta una sentencia SQL y devuelve un objeto en un set de datos
  */
+async function execute(databaseName, sql, values = [], config) 
+{
+	const connection = await connect(databaseName, config);
+	const dbConfig = config[databaseName];
+	
+	switch (dbConfig.type) 
+	{
+		case 'postgres':
+			return postgres.query(connection, sql);
+		case 'mysql':
+			return mysql.query(connection, sql, values);
+	// case 'mariadb': // agregamos el caso MariaDB
+	//   return mariadb.query(connection, sql, binds);
+	//   break;
+		case 'oracle':
+			return oracle.query(connection, sql);
+	// case 'mongodb':
+	//  // Adaptar la consulta SQL a la sintaxis de MongoDB
+	//  console.warn("La función 'query' no es directamente aplicable a MongoDB con sintaxis SQL.");
+	//  return null; // O lanzar un error
+		default:
+			throw new Error(`Tipo de base de datos '${dbConfig.type}' no soportado para la operación 'query'.`);
+	}
+}
 
  
 
@@ -153,6 +175,7 @@ module.exports =
 {
   connect,
   query,
+  execute,
   close,
   // ... otras funciones comunes
 };

@@ -19,8 +19,10 @@ const mysql = require('mysql2/promise'); // Usamos mysql2/promise para async/awa
  * @param {object} config - Configuración de la conexión.
  * @returns {Promise<mysql.Connection>} Objeto de conexión de MySQL.
  */
-async function connect(config) {
-  try {
+async function connect(config) 
+{
+  try 
+  {
     const connection = await mysql.createConnection({
       host: config.host,
       port: config.port,
@@ -29,7 +31,9 @@ async function connect(config) {
       database: config.database,
     });
     return connection;
-  } catch (error) {
+  } 
+  catch (error) 
+  {
     console.error('Error al conectar a MySQL:', error);
     throw error; // Re-lanzamos el error para que sea manejado por el llamador
   }
@@ -45,11 +49,15 @@ async function connect(config) {
  * @param {Array} [values] - Parámetros para la consulta.
  * @returns {Promise<Array>} Filas resultantes de la consulta.
  */
-async function query(connection, sql, values = []) {
-  try {
+async function query(connection, sql, values = []) 
+{
+  try 
+  {
     const [rows, fields] = await connection.execute(sql, values);
     return rows;
-  } catch (error) {
+  } 
+  catch (error) 
+  {
     console.error('Error al ejecutar la consulta MySQL:', error);
     throw error;
   }
@@ -63,10 +71,12 @@ async function query(connection, sql, values = []) {
  * @param {mysql.Connection} connection - Objeto de conexión de MySQL.
  * @returns {Promise<void>}
  */
-async function close(connection) {
-  try {
-    await connection.end();
-  } catch (error) {
+async function close(connection) 
+{
+  try 
+  { await connection.end(); }
+  catch (error) 
+  {
     console.error('Error al cerrar la conexión MySQL:', error);
     throw error;
   }

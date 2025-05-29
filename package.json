@@ -1,6 +1,6 @@
 {
   "name": "minervajs-helmet",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "main": "src/db.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,10 +10,12 @@
     "Multi DataBase",
     "connect",
     "MySQL",
-    "Oracle Client"
+    "Oracle Client",
+	"PostGres",
+	"MinervaJS"
   ],
   "author": "alexander.enrique.escobar@gmail.com",
-  "license": "ISC",
+  "license": "BSD-2-Clause",
   "description": "Modulo para la gestion de coneccion a la base de datos, de diferentes tipos mediante el uso de sobre Carga y Herencia de clases",
   "dependencies": {
     "mysql2": "^3.14.0",

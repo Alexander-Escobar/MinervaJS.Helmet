@@ -2,8 +2,7 @@
  * 
  * @name MinervaJS-Helmet
  * @module MinervaJS-Helmet
- * @description Modulo gestor de la coneccion a la base de datos, con capacidad de realizar consultas en múltiples bases de datos.
- *
+ * @description Gestor unificado de conexiones y ejecución de operaciones en múltiples motores de bases de datos.
  */
 
 const postgres = require('../js/db_postgres');
@@ -60,6 +59,38 @@ async function connect(databaseName, config)
 	return connections[databaseName];
 }
 
+
+/**
+ * Dispatcher interno para query / execute / call
+ */
+async function run(databaseName, target, params, config, mode) 
+{
+  const connection = await connect(databaseName, config);
+  const dbConfig = config[databaseName];
+
+  try {
+    switch (dbConfig.type) {
+      case 'postgres':
+        return await postgres[mode](connection, target, params);
+
+      case 'mysql':
+        return await mysql[mode](connection, target, params);
+
+      case 'oracle':
+        return await oracle[mode](connection, target, params);
+
+      default:
+        throw new Error(`Tipo de base de datos '${dbConfig.type}' no soportado.`);
+    }
+  } 
+  catch (err) 
+  {
+    throw new Error(`[Helmet][${dbConfig.type}][${mode}] ${err.message}`);
+  }
+}
+
+
+
 /**
  * Ejecuta una consulta en la base de datos especificada.
  *
@@ -73,29 +104,54 @@ async function connect(databaseName, config)
  * @throws {Error} Si el tipo de base de datos no es soportado para la operación 'query'.
  * @description Ejecuta una sentencia SQL en la base de datos especificada y devuelve un objeto en un set de datos
  */
-async function query(databaseName, sql, values = [], config) 
-{
-  const connection = await connect(databaseName, config);
-  const dbConfig = config[databaseName];
+// async function query(databaseName, sql, values = [], config) 
+// {
+  // const connection = await connect(databaseName, config);
+  // const dbConfig = config[databaseName];
 
-  switch (dbConfig.type) 
-  {
-    case 'postgres':
-      return postgres.query(connection, sql);
-    case 'mysql':
-      return mysql.query(connection, sql, values);
-    // case 'mariadb': // agregamos el caso MariaDB
-    //   return mariadb.query(connection, sql, binds);
-    //   break;
-    case 'oracle':
-      return oracle.query(connection, sql);
-    // case 'mongodb':
-    //  // Adaptar la consulta SQL a la sintaxis de MongoDB
-    //  console.warn("La función 'query' no es directamente aplicable a MongoDB con sintaxis SQL.");
-    //  return null; // O lanzar un error
-    default:
-      throw new Error(`Tipo de base de datos '${dbConfig.type}' no soportado para la operación 'query'.`);
-  }
+  // switch (dbConfig.type) 
+  // {
+    // case 'postgres':
+      // return postgres.query(connection, sql);
+    // case 'mysql':
+      // return mysql.query(connection, sql, values);
+    // // case 'mariadb': // agregamos el caso MariaDB
+    // //   return mariadb.query(connection, sql, binds);
+    // //   break;
+    // case 'oracle':
+      // return oracle.query(connection, sql);
+    // // case 'mongodb':
+    // //  // Adaptar la consulta SQL a la sintaxis de MongoDB
+    // //  console.warn("La función 'query' no es directamente aplicable a MongoDB con sintaxis SQL.");
+    // //  return null; // O lanzar un error
+    // default:
+      // throw new Error(`Tipo de base de datos '${dbConfig.type}' no soportado para la operación 'query'.`);
+  // }
+// }
+
+/**
+ * Ejecuta consultas de lectura (SELECT).
+ */
+async function query(databaseName, sql, params = [], config) 
+{
+  return run(databaseName, sql, params, config, 'query');
+}
+
+/**
+ * Ejecuta sentencias de escritura (INSERT, UPDATE, DELETE, DDL).
+ */
+async function execute(databaseName, sql, params = [], config) 
+{
+  return run(databaseName, sql, params, config, 'execute');
+}
+
+
+/**
+ * Ejecuta procedimientos almacenados o funciones.
+ */
+async function call(databaseName, procedureName, params = {}, config) 
+{
+  return run(databaseName, procedureName, params, config, 'call');
 }
 
 /**
@@ -110,28 +166,28 @@ async function query(databaseName, sql, values = [], config)
  */
 async function close(databaseName, config) 
 {
-  if (connections[databaseName]) 
-  {
-    const dbConfig = config[databaseName];
-    switch (dbConfig.type) {
-      case 'postgres':
-        await postgres.close(connections[databaseName]);
-        break;
-      case 'mysql':
-        await mysql.close(connections[databaseName]);
-        break;
-    //  case 'mariadb': // agregamos el caso MariaDB
-    //    await mariadb.close(connections[databaseName]);
-    //    break;
-      case 'oracle':
-        await oracle.close(connections[databaseName]);
-        break;
-    //  case 'mongodb':
-    //    await mongodb.close(connections[databaseName]);
-    //    break;
-    }
-    delete connections[databaseName];
+  if (!connections[databaseName]) return;
+  
+  const dbConfig = config[databaseName];
+  switch (dbConfig.type) {
+  case 'postgres':
+	await postgres.close(connections[databaseName]);
+	break;
+  case 'mysql':
+	await mysql.close(connections[databaseName]);
+	break;
+//  case 'mariadb': // agregamos el caso MariaDB
+//    await mariadb.close(connections[databaseName]);
+//    break;
+  case 'oracle':
+	await oracle.close(connections[databaseName]);
+	break;
+//  case 'mongodb':
+//    await mongodb.close(connections[databaseName]);
+//    break;
   }
+    delete connections[databaseName];
+
 }
 
 
@@ -144,38 +200,47 @@ async function close(databaseName, config)
  * @returns {result} result/err - Devuelve un objeto con el set de datos o un objeto err con la respuesta del error
  * @description Ejecuta una sentencia SQL y devuelve un objeto en un set de datos
  */
-async function execute(databaseName, sql, values = [], config) 
-{
-	const connection = await connect(databaseName, config);
-	const dbConfig = config[databaseName];
+// async function execute(databaseName, sql, values = [], config) 
+// {
+	// const connection = await connect(databaseName, config);
+	// const dbConfig = config[databaseName];
 	
-	switch (dbConfig.type) 
-	{
-		case 'postgres':
-			return postgres.query(connection, sql);
-		case 'mysql':
-			return mysql.query(connection, sql, values);
-	// case 'mariadb': // agregamos el caso MariaDB
-	//   return mariadb.query(connection, sql, binds);
-	//   break;
-		case 'oracle':
-			return oracle.query(connection, sql);
-	// case 'mongodb':
-	//  // Adaptar la consulta SQL a la sintaxis de MongoDB
-	//  console.warn("La función 'query' no es directamente aplicable a MongoDB con sintaxis SQL.");
-	//  return null; // O lanzar un error
-		default:
-			throw new Error(`Tipo de base de datos '${dbConfig.type}' no soportado para la operación 'query'.`);
-	}
-}
+	// switch (dbConfig.type) 
+	// {
+		// case 'postgres':
+			// return postgres.query(connection, sql);
+		// case 'mysql':
+			// return mysql.query(connection, sql, values);
+	// // case 'mariadb': // agregamos el caso MariaDB
+	// //   return mariadb.query(connection, sql, binds);
+	// //   break;
+		// case 'oracle':
+			// return oracle.query(connection, sql);
+	// // case 'mongodb':
+	// //  // Adaptar la consulta SQL a la sintaxis de MongoDB
+	// //  console.warn("La función 'query' no es directamente aplicable a MongoDB con sintaxis SQL.");
+	// //  return null; // O lanzar un error
+		// default:
+			// throw new Error(`Tipo de base de datos '${dbConfig.type}' no soportado para la operación 'query'.`);
+	// }
+// }
 
- 
+/**
+ * Cierra todas las conexiones activas.
+ */
+async function closeAll(config) 
+{
+  for (const dbName of Object.keys(connections)) 
+  { await close(dbName, config); }
+}
 
 module.exports = 
 {
   connect,
   query,
   execute,
+  call,
   close,
+  closeAll
   // ... otras funciones comunes
 };

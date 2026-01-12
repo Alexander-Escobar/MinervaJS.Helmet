@@ -1,6 +1,6 @@
 {
-  "name": "minervajs-helmet",
-  "version": "1.0.15",
+  "name": "@minervajs/helmet",
+  "version": "1.0.0",
   "main": "src/db.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

@@ -56,9 +56,9 @@ Este contrato garantiza que Helmet pueda operar sin conocer los detalles del mot
 ## 📦 Instalación
 
 ```bash
-npm install minervajs-helmet
+npm install @minervajs/helmet
 ```
-
+⚠️ Previous name: minervajs-helmet (deprecated)
 > *(o incluir el módulo directamente dentro del proyecto MinervaJS)*
 
 ---

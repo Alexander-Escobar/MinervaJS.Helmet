@@ -46,6 +46,7 @@ query(connection, sql, params = [])
 execute(connection, sql, params = [])
 call(connection, procedureName, params = {})
 close(connection)
+closeAll(config)
 ```
 
 Este contrato garantiza que Helmet pueda operar sin conocer los detalles del motor subyacente.
@@ -204,22 +205,6 @@ La API ejecuta la operación sin conocer SQL ni lógica de negocio.
 * Cerrar conexiones en shutdown de la aplicación
 * Mantener la configuración desacoplada
 
----
-
-## 🧪 Pruebas
-
-Helmet incluye pruebas de integración usando **Jest**:
-
-```bash
-npm test
-```
-
-Las pruebas validan:
-
-* Conexión
-* CRUD
-* Stored Procedures
-* Manejo de errores
 
 ---
 
